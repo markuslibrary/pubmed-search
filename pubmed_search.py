@@ -1,10 +1,13 @@
 from Bio import Entrez
 
+# Function to search PubMed and return a raw list of results
 def get_results(parameter_type, search_term, results_cap=10):
-    '''Searches PubMed and returns raw search results indluding the list of PMIDs. 
-    parameter_type: "keyword", "identifier", "author", "advanced" (copy search string from PubMed advanced search builder)
-    Enter search term as string. Defauly results cap is 10 unless specified.
     '''
+    parameter_type: "keyword", "identifier", "author", "advanced" (copy search string from PubMed advanced search builder)
+    Enter search term as string. Default results cap is 10 unless specified.
+    '''
+    
+    # Dictionary with allowed search parameters
     parameter_dict = {'keyword' : search_term, 
                       'identifier' : search_term + '[SI]', 
                       'author' : search_term + '[Author]',
@@ -26,23 +29,24 @@ def get_results(parameter_type, search_term, results_cap=10):
         
     except Exception as e:
         print(f'An error occurred: {str(e)}.')
-    
+
+# Function to extract the PMIDs from the raw results    
 def get_pmids(results):
-    '''Extracts the PMIDs from the raw results and returns as a list of strings.'''
     pmids = results["IdList"]
     return pmids
 
+# Function to export PMIDs from raw search results in .csv or .txt format
 def export_pmids(results, filetype, filename = ''):
-    '''Export the PMIDs as a list in .csv or .txt format. Enter the filetype as '.txt' or '.csv'. '''
+    '''Enter the filetype as '.txt' or '.csv'. '''
     pmids = results['IdList']
     with open('pmids' + filename + filetype, 'w') as f:
         for line in pmids:
             f.write(line)
             f.write('\n')
-    
+
+# Function to export the full search results in either .csv or .txt format
 def export_results(results, filetype, filename = ''):
-    '''Exports the full search results in either .csv or .txt format. Enter the filetype as '.txt' or '.csv.'''
-    
+    ''' Enter the filetype as '.txt' or '.csv.'''
     with open('search_results' + filename + filetype, 'w') as f:
         f.write('Count \t \t \t '+ results['Count'] + '\n')
         f.write('RetMax \t \t \t '+ results['RetMax'] + '\n')
