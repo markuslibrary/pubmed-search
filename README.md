@@ -20,6 +20,6 @@ This function takes in the raw results returned by `get_results()` and returns t
 
 This function takes in the raw results returned by `get_results()` and exports the list of PMIDs in .txt or .csv format. You can dictate the desired file type by specifying the `filetype` variable as `'.txt'` or `'.csv'`. You may also assign the value of the `filename` variable as a string to specify the name of the output file, as well as the desired saving location by adding a file path.
 
-##export_results
+## export_results
 
 This function takes in the raw results returned by `get_results()` and exports the full details in .txt or .csv format. You can dictate the desired file type by specifying the `filetype` variable as `'.txt'` or `'.csv'`. You may also assign the value of the `filename` variable as a string to specify the name of the output file, as well as the desired saving location by adding a file path.
