@@ -42,7 +42,7 @@ def get_pmids(results):
 
 # Function to export PMIDs from raw search results in .csv or .txt format
 def export_pmids(results, filetype, filename = 'pmids'):
-    '''Enter the filetype as '.txt' or '.csv'. Enter the desired output file name, otherwise the defauls will be used'''
+    '''Enter the filetype as '.txt' or '.csv'. Enter the desired output file name, otherwise the default will be used. '''
     pmids = results['IdList']
     with open('pmids' + filename + filetype, 'w') as f:
         for line in pmids:
@@ -51,7 +51,7 @@ def export_pmids(results, filetype, filename = 'pmids'):
 
 # Function to export the full search results in either .csv or .txt format
 def export_results(results, filetype, filename = 'results'):
-    ''' Enter the filetype as '.txt' or '.csv.'''
+    ''' Enter the filetype as '.txt' or '.csv. Enter the desired output file name, otherwise the default will be used. '''
     with open('search_results' + filename + filetype, 'w') as f:
         f.write('Count \t \t \t '+ results['Count'] + '\n')
         f.write('RetMax \t \t \t '+ results['RetMax'] + '\n')
@@ -64,7 +64,7 @@ def export_results(results, filetype, filename = 'results'):
 
 # Function that takes in a list of PMIDs and writes a RIS citation file which can be opened with any citation management software
 def export_citations(pmids, filename = 'citations'):
-    ''' pmids should be a list of PMIDs, listed as strings. '''
+    ''' pmids should be a list of PMIDs, listed as strings. Enter the desired output file name, otherwise the default will be used. '''
     try:
         records = []
         for pmid in pmids:
