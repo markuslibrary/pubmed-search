@@ -1,9 +1,14 @@
 from Bio import Entrez
+from Bio import Medline
+
+# Remember to define your Entrez email like so:
+# Entrez.email = 'your@email.com'
+
 
 # Function to search PubMed and return a raw list of results
 def get_results(parameter_type, search_term, results_cap=10):
     '''
-    parameter_type: "keyword", "identifier", "author", "advanced" (copy search string from PubMed advanced search builder)
+    parameter_type: 'keyword', 'identifier', 'author', 'advanced' (copy search string from PubMed advanced search builder)
     Enter search term as string. Default results cap is 10 unless specified.
     '''
     
@@ -36,8 +41,8 @@ def get_pmids(results):
     return pmids
 
 # Function to export PMIDs from raw search results in .csv or .txt format
-def export_pmids(results, filetype, filename = ''):
-    '''Enter the filetype as '.txt' or '.csv'. '''
+def export_pmids(results, filetype, filename = 'pmids'):
+    '''Enter the filetype as '.txt' or '.csv'. Enter the desired output file name, otherwise the defauls will be used'''
     pmids = results['IdList']
     with open('pmids' + filename + filetype, 'w') as f:
         for line in pmids:
@@ -45,7 +50,7 @@ def export_pmids(results, filetype, filename = ''):
             f.write('\n')
 
 # Function to export the full search results in either .csv or .txt format
-def export_results(results, filetype, filename = ''):
+def export_results(results, filetype, filename = 'results'):
     ''' Enter the filetype as '.txt' or '.csv.'''
     with open('search_results' + filename + filetype, 'w') as f:
         f.write('Count \t \t \t '+ results['Count'] + '\n')
@@ -56,5 +61,28 @@ def export_results(results, filetype, filename = ''):
         f.write('PMIDs \n \n')
         for pmid in results['IdList']:
             f.write(pmid + '\n')
+
+# Function that takes in a list of PMIDs and writes a RIS citation file which can be opened with any citation management software
+def export_citations(pmids, filename = 'citations'):
+    ''' pmids should be a list of PMIDs, listed as strings. '''
+    try:
+        records = []
+        for pmid in pmids:
+            handle = Entrez.efetch(db = 'pubmed', id = pmid, rettype = 'medline', retmode = 'text')
+            record = Medline.read(handle)
+            records.append(record)
+
+        with open(filename + '.ris', 'w', encoding='utf-8') as ris_file:
+            for record in records:
+                ris_file.write('TY  - JOUR\n')  # Type of reference (Journal article)
+                ris_file.write(f"TI  - {record.get('TI', '')}\n")  # Title
+                ris_file.write(f"AB  - {record.get('AB', '')}\n")  # Abstract
+                ris_file.write(f"AU  - {', '.join(record.get('AU', []))}\n")  # Authors
+                ris_file.write(f"PY  - {record.get('DP', '')}\n")  # Publication Year
+                ris_file.write(f"PMID  - {record.get('PMID', '')}\n")  # PMID
+                ris_file.write('ER  - \n\n')  # End of reference
+
+    except Exception as e:
+        print('An error occurred:', str(e))
 
 
