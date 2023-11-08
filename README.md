@@ -23,3 +23,7 @@ This function takes in the raw results returned by `get_results()` and exports t
 ## export_results
 
 This function takes in the raw results returned by `get_results()` and exports the full details in .txt or .csv format. You can dictate the desired file type by specifying the `filetype` variable as `'.txt'` or `'.csv'`. You may also assign the value of the `filename` variable as a string to specify the name of the output file, as well as the desired saving location by adding a file path.
+
+## export_citations
+
+This function takes in the list of PMIDs returned by `get_pmids()` (or just a list of PMIDs) and exports a RIS citation file, which is compatible with most reference management software. You may assign the value of the `filename` variable as a string to specify the name of the output file, as well as the desired saving location by adding a file path.
